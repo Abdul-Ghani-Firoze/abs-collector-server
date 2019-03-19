@@ -25,8 +25,16 @@ exports.logEvent = function (event, eventData) {
     console.log("HERE: " + event);
     switch (event) {
         case 'Entered product page':
-            console.log("enterd");
+            console.log("entered product page");
             store_stickiness_data(eventData);
+            break;
+        case 'Leaving product page':
+            console.log("leaving product page");
+            update_leaving_time(eventData);
+            break;
+        case 'Entered category page':
+            console.log("entered category page");
+            store_category_visits();
             break;
         default:
             console.log("In default");
@@ -49,4 +57,12 @@ function store_stickiness_data(eventData) {
             console.log("1 record inserted");
         });
     });
+}
+
+function update_leaving_time(eventData) {
+    console.log("updating leaving time");
+}
+
+function store_category_visits() {
+    console.log("storing category visits")
 }
