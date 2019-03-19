@@ -64,9 +64,8 @@ var parseValue = function (value) {
 var parseDataQuery = function (req, debug) {
     if (!req.query.data) {
         if (debug) {
-            console.error('No \'data\' query param defined!')
+            console.error('No \'data\' query param defined!');
         }
-        ;
         return false;
     }
     var data = {};
@@ -74,9 +73,8 @@ var parseDataQuery = function (req, debug) {
         data = JSON.parse(decodeURIComponent(req.query.data));
     } catch (e) {
         if (debug) {
-            console.error('Failed to JSON parse \'data\' query param')
+            console.error('Failed to JSON parse \'data\' query param');
         }
-        ;
         return false;
     }
     return data;
@@ -90,7 +88,7 @@ var createAndLogEvent = function (data, req) {
 
     // format date
     var time = dateFormat(time, "dd/mm/yyyy h:MM:ss");
-    
+
     // key-value array of event data
     var eventData = {};
 
