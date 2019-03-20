@@ -45,9 +45,9 @@ function log_event(event, eventData) {
 
 function store_product_visit(eventData) {
     console.log("in store product visit, event entered at: " + eventData['enteredAt']);
-    var sql = "INSERT INTO product_visits (member, sessionId, productUrl, enteredAt, leftAt) VALUES (?, ?, ?, ?, ?)";
+    var sql = "INSERT INTO product_visits (productId, member, sessionId, productUrl, enteredAt, leftAt) VALUES (?, ?, ?, ?, ?, ?)";
     console.log("query: " + sql);
-    con.query(sql, [eventData['member'], eventData['sessionId'], eventData['productUrl'],
+    con.query(sql, [eventData['productId'], eventData['member'], eventData['sessionId'], eventData['productUrl'],
         eventData['enteredAt'].replace(/["']/g, ""), '0000-00-00 00:00:00'], function (err, result) {
         if (err)
             throw err;
@@ -57,10 +57,10 @@ function store_product_visit(eventData) {
 
 function update_leaving_time(eventData) {
     console.log("updating leaving time");
-    var sql = "UPDATE product_visits SET leftAt = ? WHERE sessionId = ? AND productUrl = ? "
+    var sql = "UPDATE product_visits SET leftAt = ? WHERE sessionId = ? AND productId = ? "
             + "AND date(enteredAt) = ? AND leftAt = '0000-00-00 00:00:00'";
     console.log("query: " + sql);
-    con.query(sql, [eventData['leftAt'].replace(/["']/g, ""), eventData['sessionId'], eventData['productUrl'],
+    con.query(sql, [eventData['leftAt'].replace(/["']/g, ""), eventData['sessionId'], eventData['productId'],
         dateFormat(new Date(), "yyyy-mm-dd")], function (err, result) {
         if (err)
             throw err;
