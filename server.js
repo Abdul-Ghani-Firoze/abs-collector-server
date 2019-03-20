@@ -146,10 +146,10 @@ exports.track = app.get('/track', function (req, res) {
         res.send('0');
     }
     createAndLogEvent(data, req);
-//    res.send('1');
+    res.send('1');
 
     //run custom tracking service
-    res.end(service.track(data, req, res));
+//    res.end(service.track(data, req, res));
 });
 
 // IMG beacon tracking - data query optional

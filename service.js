@@ -14,14 +14,14 @@ var con = mysql.createConnection({
     database: "abs"
 });
 
-exports.track = function (data, req, res) {
-    console.log('in service track');
+module.exports = {
+    logEvent: function (event, eventData) {
+        console.log('in service track logEvent');
+        log_event(event, eventData);
+    }
+};
 
-    res.send('1');
-
-}
-
-exports.logEvent = function (event, eventData) {
+function log_event(event, eventData) {
     console.log("HERE: " + event);
     switch (event) {
         case 'Entered product page':
@@ -34,7 +34,7 @@ exports.logEvent = function (event, eventData) {
             break;
         case 'Entered category page':
             console.log("entered category page");
-            store_category_visits();
+            store_category_visit(eventData);
             break;
         default:
             console.log("In default");
@@ -63,6 +63,19 @@ function update_leaving_time(eventData) {
     console.log("updating leaving time");
 }
 
-function store_category_visits() {
-    console.log("storing category visits")
+function store_category_visit(eventData) {
+    console.log("storing category visits");
+    con.connect(function (err) {
+        if (err)
+            throw err;
+        console.log("Connected!");
+        var sql = "INSERT INTO category_visits (member, sessionId, categoryUrl) "
+                + "VALUES (" + eventData['member'] + ", '" + eventData['sessionId'] + "', '" + eventData['categoryUrl'] + "')";
+        console.log("query: " + sql);
+        con.query(sql, function (err, result) {
+            if (err)
+                throw err;
+            console.log("1 record inserted");
+        });
+    });
 }
